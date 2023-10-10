@@ -1,12 +1,19 @@
 package com.example.taller2
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.FusedLocationProviderClient
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var mFusedLocationClient: FusedLocationProviderClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -20,7 +27,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnMap.setOnClickListener {
-            // Agrega aquí la lógica para abrir el mapa
+            val intent = Intent(this, MapasActivity::class.java)
+            startActivity(intent)
         }
 
         btnContacts.setOnClickListener {
