@@ -23,7 +23,8 @@ class MainActivity : AppCompatActivity() {
         val btnContacts = findViewById<Button>(R.id.btnContacts)
 
         btnCamera.setOnClickListener {
-            // Agrega aquí la lógica para abrir la cámara
+            val intent = Intent(this, CamaraActivity::class.java)
+            startActivity(intent)
         }
 
         btnMap.setOnClickListener {
