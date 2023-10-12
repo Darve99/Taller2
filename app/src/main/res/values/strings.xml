@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Taller 2</string>
     <string name="title_activity_mapas">MapasActivity</string>
-    <string name="buscar">Buscar</string>
+    <string name="buscar">Dirección...</string>
 </resources>
