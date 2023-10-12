@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.io.InputStream
 import android.graphics.Matrix
+import android.net.Uri
 
 class CamaraActivity : AppCompatActivity()
 {
@@ -24,6 +25,8 @@ class CamaraActivity : AppCompatActivity()
     private val STORAGE_PERMISSION_REQUEST_CODE = 1
     val IMAGE_PICKER_REQUEST = 2
     val CAMARA_REQUEST = 3
+
+    private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -53,17 +56,20 @@ class CamaraActivity : AppCompatActivity()
 
         botonCamara.setOnClickListener {
 
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
             ) {
-                // Solicitar el permiso si no está concedido
+                // Solicitar los permisos si no están concedidos
                 ActivityCompat.requestPermissions(
                     this,
-                    arrayOf(android.Manifest.permission.CAMERA),
+                    arrayOf(
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ),
                     CAMARA_REQUEST
                 )
             } else {
-                // Si el permiso está concedido sigue
+                // Si los permisos están concedidos, sigue
                 takePicture()
             }
         }
@@ -80,6 +86,14 @@ class CamaraActivity : AppCompatActivity()
     private fun takePicture() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         try {
+            val values = ContentValues()
+            values.put(MediaStore.Images.Media.TITLE, "New Picture")
+            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera")
+            imageUri = contentResolver.insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                values
+            )
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
             startActivityForResult(takePictureIntent, CAMARA_REQUEST)
         } catch (e: ActivityNotFoundException) {
             e.message?.let { Log.e("PERMISSION_APP", it) }
@@ -106,9 +120,9 @@ class CamaraActivity : AppCompatActivity()
             CAMARA_REQUEST -> {
                 if (resultCode == RESULT_OK) {
                     try {
-                        val extras: Bundle? = data?.extras
-                        val imageBitmap = extras?.get("data") as? Bitmap
-                        val rotatedBitmap = rotateImage(imageBitmap, 90f)
+                        val imageStream: InputStream? = contentResolver.openInputStream(imageUri!!)
+                        val selectedImage = BitmapFactory.decodeStream(imageStream)
+                        val rotatedBitmap = rotateImage(selectedImage, 90f)
                         foto.setImageBitmap(rotatedBitmap)
                     } catch (e: Exception) {
                         e.message?.let { Log.e("PERMISSION_APP", it) }
