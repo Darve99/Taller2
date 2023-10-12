@@ -10,10 +10,10 @@
 
     <ImageView
         android:id="@+id/imagen"
-        android:layout_width="1000px"
-        android:layout_height="1500px"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:layout_width="400dp"
+        android:layout_height="600dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_camara"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -24,16 +24,16 @@
 
         <Button
             android:id="@+id/buttonGaleria"
-            android:layout_width="350px"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="10dp"
             android:text="Galeria" />
 
         <Button
             android:id="@+id/buttonCamara"
-            android:layout_width="350px"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="10dp"
             android:text="Camara" />
 
     </LinearLayout>
