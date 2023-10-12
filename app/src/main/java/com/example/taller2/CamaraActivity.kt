@@ -35,7 +35,7 @@ class CamaraActivity : AppCompatActivity()
 
         val botonGaleria = findViewById<Button>(R.id.buttonGaleria)
         val botonCamara = findViewById<Button>(R.id.buttonCamara)
-        foto = findViewById<ImageView>(R.id.imagen)
+        foto = findViewById<ImageView>(R.id.imageView)
 
         botonGaleria.setOnClickListener {
 
